@@ -1,9 +1,14 @@
 #include <iostream>
+#include <string>
+#include <time.h>
+#include <fstream>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 //print Array
-void printArray(int arr[], int size) {
+void printArray(double arr[], int size) {
   for(int i = 0; i < size; i++) {
     cout << arr[i] << " ";
   }
@@ -11,9 +16,9 @@ void printArray(int arr[], int size) {
 }
 
 //Bubble Sort
-void bubbleSort(int arr[], int size) {
+void bubbleSort(double arr[], int size) {
   for(int i = 0; i < size; i++) {
-    int temp = 0;
+    double temp = 0;
     for(int j = 0; j < size - 1; j++) {
       if(arr[j] > arr[j+1]) {
         temp = arr[j+1];
@@ -25,11 +30,11 @@ void bubbleSort(int arr[], int size) {
 }
 
 //Selection Sort
-void selectionSort(int arr[], int size) {
+void selectionSort(double arr[], int size) {
   for(int i = 0; i < size; i++) {
     for(int j = i; j < size; j++) {
       if(arr[j] < arr[i]) {
-        int temp = arr[j];
+        double temp = arr[j];
         arr[j] = arr[i];
         arr[i] = temp;
       }
@@ -38,9 +43,9 @@ void selectionSort(int arr[], int size) {
 }
 
 //insertion Sort
-void insertionSort(int arr[], int size) {
+void insertionSort(double arr[], int size) {
   for(int i = 1; i < size; i++) {
-    int temp = arr[i];
+    double temp = arr[i];
     int j = i;
     while(j>0 && arr[j-1] >= temp) {
       arr[j] = arr[j-1];
@@ -51,10 +56,10 @@ void insertionSort(int arr[], int size) {
 }
 
 //quick Sort
-int partition(int arr[], int low, int high) {
-  int piv = arr[high];
+int partition(double arr[], int low, int high) {
+  double piv = arr[high];
   int i = low-1;
-  int temp = 0;
+  double temp = 0;
   for(int j = low; j <= high-1; j++) {
 
     if(arr[j] <= piv) {
@@ -69,7 +74,7 @@ int partition(int arr[], int low, int high) {
   arr[i+1] = temp;
   return i+1;
 }
-void quickSort(int arr[], int low, int high) {
+void quickSort(double arr[], int low, int high) {
   if(low < high) {
     int partitionIdx = partition(arr, low, high);
     quickSort(arr, low, partitionIdx -1);
@@ -78,9 +83,73 @@ void quickSort(int arr[], int low, int high) {
 }
 
 int main(int argc, char **argv) {
-  int arraySize = 8;
-  int arr[arraySize] = {5,7,6,1,2,4,8,3};
-  printArray(arr,arraySize);
-  quickSort(arr,0,arraySize);
-  printArray(arr,arraySize);
+
+  string filePath;
+  if (argc != 2) { //Checks for valid command line arguments and saves argument to filePath variable
+    cerr << "Incorrect number of arguments. Execution terminated." << endl;
+    return 0;
+  }
+  else {
+    filePath = argv[1];
+  }
+
+  ifstream in;
+  in.open(filePath);
+  if(!in) {
+    cerr << "File not found. Execution terminated." << endl;
+    return 0;
+  }
+
+  string line;
+  double *arr1;
+  double *arr2;
+  double *arr3;
+  double *arr4;
+  int i = 0;
+  int size;
+
+  if(getline(in,line)) {
+    size = stoi(line);
+    arr1 = new double[size];
+    arr2 = new double[size];
+    arr3 = new double[size];
+    arr4 = new double[size];
+  }
+  while(getline(in, line)) {
+    arr1[i] = stod(line);
+    arr2[i] = stod(line);
+    arr3[i] = stod(line);
+    arr4[i] = stod(line);
+    i++;
+  }
+
+//Bubble Sort
+  auto start = high_resolution_clock::now();
+  bubbleSort(arr1, size);
+  auto stop = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(stop - start);
+  cout << "Bubble Sort took: " << duration.count() << " microseconds to complete." << endl;
+
+//Selection Sort
+  start = high_resolution_clock::now();
+  selectionSort(arr2, size);
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start);
+  cout << "Selection Sort took: " << duration.count() << " microseconds to complete." << endl;
+
+//Insertion Sort
+  start = high_resolution_clock::now();
+  insertionSort(arr3, size);
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start);
+  cout << "Insertion Sort took: " << duration.count() << " microseconds to complete." << endl;
+
+//Quick Sort
+  start = high_resolution_clock::now();
+  quickSort(arr4, 0, size);
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start);
+  cout << "Quick Sort took: " << duration.count() << " microseconds to complete." << endl;
+
+  return 0;
 }

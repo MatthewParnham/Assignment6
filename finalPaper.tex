@@ -1,3 +1,4 @@
+\documentclass[12pt]{article}
 \title{Data Structures Assignment 6 Paper}
 \author{
         Matthew Parnham \\
@@ -6,13 +7,22 @@
 }
 \date{\today}
 
-\documentclass[12pt]{article}
+
 
 \begin{document}
+
+
 \maketitle
 
-\section{Sorting Algorithms}
+\begin{abstract}
+This document is my final paper for Data Structures and Algorithms Assignment 6.
+Within, I analyze my testing of the four sorting algorithms: Bubble Sort, Selection Sort, Insertion Sort, and Quick Sort.
+\end{abstract}
 
+\section{Introduction}
+I implemented and empirically test four sorting algorithms for their runtime on a set of 1000 randomly generated numbers.
+
+\section{Sorting Algorithms}
 \paragraph{}
 Each sorting algorithm was far different than I expected in execution time.  Knowing that bubble sort, selection sort, and insertion sort have a runtime of $O(n^{2})$, I expected them to perform similarly.  They did not, however, and I now see why.  Bubble sort took on average 3000 microseconds to completely sort my test data set of 1000 numbers.  Selection sort on the other hand only took around 2500 microseconds to complete.  This is probably due to the fact that bubble sort performs exactly $n^{2}$ iterations while selection sort performs $n^{2}-n$ iterations.  This will also lead to less swaps.
 
